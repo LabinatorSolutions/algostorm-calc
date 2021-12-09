@@ -3,11 +3,231 @@
 
 <head>
     <meta charset="utf-8">
-    <title>AlgoStorm Trading Calculators</title>
-    <meta name="description" content="AlgoStorm Trading Calculators">
+    <title>Compound Profits Calculator</title>
+    <meta name="description" content="Compound Profits Calculator">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="shortcut icon" type="image/jpg" href="calculator.ico" />
-    <meta http-equiv="refresh" content="2; url=./compound-profits-calculator.html" />
 </head>
+
+<body style="background-color:#f8f9fa;">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <br />
+    <nav class="navbar navbar-light bg-light navbar-expand-md justify-content-center">
+        <div class="container">
+            <a href="./index.html" class="navbar-brand d-flex w-50 me-auto"><img src="logo.svg" alt="AlgoStorm Logo" width="30" height="30" style="color:#212529; margin-right: 5px">AlgoStorm Trading Calculators</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsingNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse collapse w-100" id="collapsingNavbar">
+                <ul class="nav navbar-nav ms-auto w-100 justify-content-end">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="./index.html">Compound Profits Calculator</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./liquidation-calculator.html">Liquidation Calculator</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link me-3" href="./position-size-calculator.html">Position Size Calculator</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="https://docs.algostorm.com/" class="btn btn-outline-dark me-2">Docs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="https://algostorm.com/" class="btn btn-outline-dark me-2">AlgoStorm.com</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <br />
+    <h1>
+        <center style="color: #ffffff; background-color: #212529; padding: 20px">Compound Profits Calculator</center>
+    </h1>
+    <br />
+    <div class="container col-6">
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="card-header">
+                        Capital & Position Sizing
+                    </div>
+                    <div class="card-body">
+                        <label for="capital" class="form-label">Initial Capital</label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">$</span>
+                            <input type="number" class="form-control" aria-label="Initial Capital" id="initial_capital" value="1000">
+                        </div>
+                        <label for="profit" class="form-label">Position Size Per Order (%)</label>
+                        <div class="input-group mb-3">
+                            <input type="number" class="form-control" aria-label="Position Size In Percentage Per Order" id="position_percentage" value="20">
+                            <span class="input-group-text">%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card">
+                    <div class="card-header">
+                        Profit & Leverage
+                    </div>
+                    <div class="card-body">
+                        <label for="profit" class="form-label">Profit Per Order (%)</label>
+                        <div class="input-group mb-3">
+                            <input type="number" class="form-control" aria-label="Percentage Of Profit" id="profit" value="1">
+                            <span class="input-group-text">%</span>
+                        </div>
+                        <label for="leverage" class="form-label">Leverage</label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">X</span>
+                            <input type="number" class="form-control" min=1 max=100 aria-label="Leverage" id="leverage" value="5">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="card-header">Calculate The Total Compound Profit</div>
+                    <div class="card-body">
+                        <label for="rounds" class="form-label">Number Of Rounds</label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">#</span>
+                            <input type="number" class="form-control" aria-label="Number Of Rounds" id="rounds" value="1">
+                        </div>
+                        <label for="total_profits" class="form-label">Calculated Total Profit</label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">$</span>
+                            <input type="text" class="form-control" aria-label="Total Profit" id="total_profit" disabled>
+                        </div>
+                        <label for="new_balance" class="form-label">Calculated New Balance</label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">$</span>
+                            <input type="text" class="form-control" aria-label="Total" id="new_balance" disabled>
+                        </div>
+                        <br>
+                        <div class="mb-3 col-md-12 text-center">
+                            <button type="button" class="btn btn-outline-dark btn-lg btn-block" onclick="calTotal()" id="btnTotal">Calculate</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card">
+                    <div class="card-header">Calculate The Required Number Of Rounds</div>
+                    <div class="card-body">
+                        <label for="desired_balance" class="form-label">Desired New Balance</label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">$</span>
+                            <input type="number" class="form-control" aria-label="Desired Total Amount" id="desired_balance" value="5000">
+                        </div>
+                        <label for="required_rounds_with_leverage" class="form-label">Calculated Rounds With Leverage</label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">#</span>
+                            <input type="text" class="form-control" aria-label="Calculated Rounds" id="required_rounds_with_leverage" disabled>
+                        </div>
+                        <label for="required_rounds_without_leverage" class="form-label">Calculated Rounds Without Leverage</label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">#</span>
+                            <input type="text" class="form-control" aria-label="Calculated Rounds Without Leverage" id="required_rounds_without_leverage" disabled>
+                        </div>
+                        <br>
+                        <div class="mb-3 col-md-12 text-center">
+                            <button type="button" class="btn btn-outline-dark btn-lg btn-block" onclick="calTotal()" id="btnRounds">Calculate</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+    document.addEventListener('keyup', function(e) {
+        calTotal();
+    })
+
+    document.addEventListener('DOMContentLoaded', function(e) {
+        calTotal();
+    })
+
+    function calTotal() {
+        // Get Values From Input Fields
+        let initial_capital = parseFloat(document.getElementById("initial_capital").value)
+        let position_percentage = parseFloat(document.getElementById("position_percentage").value)
+        let profit = parseFloat(document.getElementById("profit").value)
+        let leverage = parseFloat(document.getElementById("leverage").value)
+        let rounds = parseFloat(document.getElementById("rounds").value)
+        let desired_balance = parseFloat(document.getElementById("desired_balance").value)
+
+        let { total_profit, new_balance } = calBalance(initial_capital, position_percentage, profit, leverage, rounds);
+        let required_rounds_with_leverage = calRoundsWithLeverage(initial_capital, position_percentage, profit, leverage, desired_balance);
+        let required_rounds_without_leverage = calRoundsWithoutLeverage(initial_capital, position_percentage, profit, desired_balance);
+
+        // The Equations For Reference:
+        // let new_balance = initial_capital * Math.pow(1 + ((profit * leverage) / 100), rounds)
+        // let required_rounds_with_leverage = (Math.log(desired_balance / initial_capital)) / (Math.log(1 + ((profit * leverage) / 100)))
+
+        // Return Values
+        document.getElementById("total_profit").value = new_balance - initial_capital
+        document.getElementById("new_balance").value = new_balance
+        document.getElementById("required_rounds_with_leverage").value = required_rounds_with_leverage
+        document.getElementById("required_rounds_without_leverage").value = required_rounds_without_leverage
+        return true;
+    }
+
+    function calBalance(initial_capital, position_percentage, profit, leverage, rounds) {
+
+        // Variables Intialization
+        let position_size = 0
+        let new_balance = initial_capital
+
+        // Calculate New Balance & Total Profit
+        for (let i = 0; i < rounds; i++) {
+            position_size = new_balance * position_percentage / 100
+            total_profit = position_size * profit * leverage / 100
+            new_balance += total_profit
+        }
+
+        return { total_profit, new_balance };
+    }
+
+    function calRoundsWithLeverage(initial_capital, position_percentage, profit, leverage, desired_balance) {
+
+        // Variables Intialization
+        let position_size = 0
+        let required_rounds_with_leverage = 0
+        let new_balance = initial_capital
+
+        // Calculate Number Of Required Rounds With Leverage
+        while (new_balance < desired_balance) {
+            position_size = new_balance * position_percentage / 100
+            total_profit = position_size * profit * leverage / 100
+            new_balance += total_profit
+            required_rounds_with_leverage++
+        }
+
+        return required_rounds_with_leverage;
+    }
+
+    function calRoundsWithoutLeverage(initial_capital, position_percentage, profit, desired_balance) {
+
+        // Variables Intialization
+        let position_size = 0
+        let required_rounds_without_leverage = 0
+        let new_balance = initial_capital
+
+        // Calculate Number Of Required Rounds With Leverage
+        while (new_balance < desired_balance) {
+            position_size = new_balance * position_percentage / 100
+            total_profit = position_size * profit / 100
+            new_balance += total_profit
+            required_rounds_without_leverage++
+        }
+
+        return required_rounds_without_leverage;
+    }
+    </script>
+</body>
 
 </html>
