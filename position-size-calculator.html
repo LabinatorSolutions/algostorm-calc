@@ -1,0 +1,145 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Position Size Calculator</title>
+    <meta name="description" content="Position Size Calculator">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="shortcut icon" type="image/jpg" href="calculator.ico" />
+</head>
+
+<body style="background-color:#f8f9fa;">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <br />
+    <nav class="navbar navbar-light bg-light navbar-expand-md justify-content-center">
+        <div class="container">
+            <a href="./index.html" class="navbar-brand d-flex w-50 me-auto"><img src="logo.svg" alt="AlgoStorm Logo" width="30" height="30" style="color:#212529; margin-right: 5px">AlgoStorm Trading Calculators</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsingNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse collapse w-100" id="collapsingNavbar">
+                <ul class="nav navbar-nav ms-auto w-100 justify-content-end">
+                    <li class="nav-item">
+                        <a class="nav-link" href="./compound-profits-calculator.html">Compound Profits Calculator</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./liquidation-calculator.html">Liquidation Calculator</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active me-3" href="./position-size-calculator.html">Position Size Calculator</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="https://docs.algostorm.com/" class="btn btn-outline-dark me-2">Docs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="https://algostorm.com/" class="btn btn-outline-dark me-2">AlgoStorm.com</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <br />
+    <h1>
+        <center style="color: #ffffff; background-color: #212529; padding: 20px">Position Size Calculator</center>
+    </h1>
+    <br />
+    <div class="container col-6">
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="card-header">
+                        Required Input Values
+                    </div>
+                    <div class="card-body">
+                        <label for="Capital" class="form-label">Capital</label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">$</span>
+                            <input type="number" class="form-control" aria-label="Capital" id="capital" value="1000">
+                        </div>
+                        <label for="leverage" class="form-label">Risk Per Trade Percentage (%)</label>
+                        <div class="input-group mb-3">
+                            <input type="number" class="form-control" aria-label="Percentage Of Risk Per Trade" id="risk" value="3" min="0.1" max="100">
+                            <span class="input-group-text">%</span>
+                        </div>
+                        <label for="leverage" class="form-label">Stop Loss Percentage (%)</label>
+                        <div class="input-group mb-3">
+                            <input type="number" class="form-control" aria-label="Stop Loss" id="stop_loss" value="0.5" min="0.1" max="100">
+                            <span class="input-group-text">%</span>
+                        </div>
+                        <label for="profit" class="form-label">Take Profit Percentage (%)</label>
+                        <div class="input-group mb-3">
+                            <input type="number" class="form-control" aria-label="Percentage Of Profit" id="take_profit" value="0.8" min="0.1" max="10000">
+                            <span class="input-group-text">%</span>
+                        </div>
+                    </div>
+                </div>
+                <br>
+            </div>
+            </form>
+            <div class="col">
+                <div class="card">
+                    <div class="card-header">
+                        Position Size & Leverage Calculations
+                    </div>
+                    <div class="card-body">
+                        <label for="rounds" class="form-label">Total Position Size</label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">$</span>
+                            <input type="number" class="form-control" aria-label="Total Position Size" id="size" disabled>
+                        </div>
+                        <label for="total" class="form-label">Required Leverage</label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">X</span>
+                            <input type="number" class="form-control" aria-label="leverage" id="leverage" disabled>
+                        </div>
+                        <label for="total" class="form-label">Possible Loss</label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">$</span>
+                            <input type="number" class="form-control" aria-label="Possible Loss" id="possible_loss" disabled>
+                        </div>
+                        <label for="total" class="form-label">Possible Profit</label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">$</span>
+                            <input type="number" class="form-control" aria-label="Possible Profit" id="possible_profit" disabled>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3 col-md-12 text-center">
+                <button type="button" class="btn btn-outline-dark btn-lg btn-block" onclick="calTotal()" id="btnTotal">Calculate</button>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+    document.addEventListener('keyup', function(e) {
+        calTotal();
+    })
+
+    document.addEventListener('DOMContentLoaded', function(e) {
+        calTotal();
+    })
+
+    function calTotal() {
+        let capital = parseFloat(document.getElementById("capital").value);
+        let risk = parseFloat(document.getElementById("risk").value);
+        let stop_loss = parseFloat(document.getElementById("stop_loss").value);
+        let take_profit = parseFloat(document.getElementById("take_profit").value);
+
+        let size_value = (capital * (risk / 100)) / (stop_loss / 100)
+        let leverage_value = size_value / capital
+        let possible_loss_value = capital * leverage_value * (stop_loss / 100)
+        let possible_profit_value = capital * leverage_value * (take_profit / 100)
+
+        document.getElementById("size").value = size_value;
+        document.getElementById("leverage").value = leverage_value;
+        document.getElementById("possible_loss").value = possible_loss_value;
+        document.getElementById("possible_profit").value = possible_profit_value;
+
+        return true;
+    }
+    </script>
+</body>
+
+</html>
