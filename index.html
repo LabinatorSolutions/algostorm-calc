@@ -56,11 +56,11 @@
                         <label for="capital" class="form-label">Initial Capital</label>
                         <div class="input-group mb-3">
                             <span class="input-group-text">$</span>
-                            <input type="number" class="form-control" aria-label="Initial Capital" id="initial_capital" value="1000">
+                            <input type="number" class="form-control" aria-label="Initial Capital" id="initial_capital" value="1000" , step="0.01">
                         </div>
                         <label for="profit" class="form-label">Position Size Per Order (%)</label>
                         <div class="input-group mb-3">
-                            <input type="number" class="form-control" aria-label="Position Size In Percentage Per Order" id="position_percentage" value="20">
+                            <input type="number" class="form-control" aria-label="Position Size In Percentage Per Order" id="position_percentage" value="20" , step="0.01">
                             <span class="input-group-text">%</span>
                         </div>
                     </div>
@@ -74,13 +74,13 @@
                     <div class="card-body">
                         <label for="profit" class="form-label">Profit Per Order (%)</label>
                         <div class="input-group mb-3">
-                            <input type="number" class="form-control" aria-label="Percentage Of Profit" id="profit" value="1">
+                            <input type="number" class="form-control" aria-label="Percentage Of Profit" id="profit" value="1" , step="0.01">
                             <span class="input-group-text">%</span>
                         </div>
                         <label for="leverage" class="form-label">Leverage</label>
                         <div class="input-group mb-3">
                             <span class="input-group-text">X</span>
-                            <input type="number" class="form-control" min=1 max=100 aria-label="Leverage" id="leverage" value="5">
+                            <input type="number" class="form-control" min=1 max=100 aria-label="Leverage" id="leverage" value="5" , step="1">
                         </div>
                     </div>
                 </div>
@@ -95,7 +95,7 @@
                         <label for="rounds" class="form-label">Number Of Rounds</label>
                         <div class="input-group mb-3">
                             <span class="input-group-text">#</span>
-                            <input type="number" class="form-control" aria-label="Number Of Rounds" id="rounds" value="1">
+                            <input type="number" class="form-control" aria-label="Number Of Rounds" id="rounds" value="1" , step="0.01">
                         </div>
                         <label for="total_profits" class="form-label">Calculated Total Profit</label>
                         <div class="input-group mb-3">
@@ -121,7 +121,7 @@
                         <label for="desired_balance" class="form-label">Desired New Balance</label>
                         <div class="input-group mb-3">
                             <span class="input-group-text">$</span>
-                            <input type="number" class="form-control" aria-label="Desired Total Amount" id="desired_balance" value="5000">
+                            <input type="number" class="form-control" aria-label="Desired Total Amount" id="desired_balance" value="5000" , step="0.01">
                         </div>
                         <label for="required_rounds_with_leverage" class="form-label">Calculated Rounds With Leverage</label>
                         <div class="input-group mb-3">
@@ -143,11 +143,13 @@
         </div>
     </div>
     <script type="text/javascript">
-    document.addEventListener('keyup', function(e) {
-        calTotal();
+    document.addEventListener("keydown", function(event) {
+        if (event.code == "Space" || event.code == "Enter" || event.code == "NumpadEnter") {
+            calTotal();
+        }
     })
 
-    document.addEventListener('DOMContentLoaded', function(e) {
+    document.addEventListener('DOMContentLoaded', function(event) {
         calTotal();
     })
 
