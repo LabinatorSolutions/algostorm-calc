@@ -22,13 +22,16 @@
             <div class="navbar-collapse collapse w-100" id="collapsingNavbar">
                 <ul class="nav navbar-nav ms-auto w-100 justify-content-end">
                     <li class="nav-item">
-                        <a class="nav-link" href="./index.html">Compound Profits Calculator</a>
+                        <a class="nav-link" href="./index.html">Compound Profits</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="./liquidation-calculator.html">Liquidation Calculator</a>
+                        <a class="nav-link active" href="./liquidation-calculator.html">Liquidation</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link me-3" href="./position-size-calculator.html">Position Size Calculator</a>
+                        <a class="nav-link" href="./position-size-calculator.html">Position Size</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link me-3" href="./hedging-calculator.html">Hedging</a>
                     </li>
                     <li class="nav-item">
                         <a href="https://docs.algostorm.com/" class="btn btn-outline-dark me-2" target="_blank">Docs</a>
@@ -53,26 +56,26 @@
                         Liquidation Calculations
                     </div>
                     <div class="card-body">
-                        <label for="initial_value" class="form-label">Capital</label>
+                        <label for="capital" class="form-label">Capital</label>
                         <div class="input-group mb-3">
                             <span class="input-group-text">$</span>
                             <input type="number" class="form-control" aria-label="Capital" id="capital" value="1000">
                         </div>
-                        <label for="final_value" class="form-label">Leverage</label>
+                        <label for="leverage" class="form-label">Leverage</label>
                         <div class="input-group mb-3">
                             <span class="input-group-text">X</span>
                             <input type="number" class="form-control" aria-label="Leverage" id="leverage" value="5" min="1" max="150">
                         </div>
-                        <label for="final_value" class="form-label">Maintenance Margin (%)</label>
+                        <label for="margin" class="form-label">Maintenance Margin (%)</label>
                         <div class="input-group mb-3">
                             <input type="number" class="form-control" aria-label="margin" id="margin" value="1" min="0.1" max="10">
                             <span class="input-group-text">%</span>
                         </div>
-                        <label for="difference" class="form-label">Liquidation Price</label>
+                        <label for="liquidation" class="form-label">Liquidation Price</label>
                         <div class="input-group mb-3">
                             <input type="number" class="form-control" aria-label="Liquidation Line" id="liquidation" disabled>
                         </div>
-                        <label for="change" class="form-label">Liquidation Percentage (%)</label>
+                        <label for="liquidation_p" class="form-label">Liquidation Percentage (%)</label>
                         <div class="input-group mb-3">
                             <input type="number" class="form-control" aria-label="Liquidation Percentage" id="liquidation_p" disabled>
                             <span class="input-group-text">%</span>
@@ -109,7 +112,7 @@
                             <input type="number" class="form-control" aria-label="Change" id="change" disabled>
                             <span class="input-group-text">%</span>
                         </div>
-                        <label for="change" class="form-label">Change In Number Of Times</label>
+                        <label for="times" class="form-label">Change In Number Of Times</label>
                         <div class="input-group mb-3">
                             <span class="input-group-text">X</span>
                             <input type="text" class="form-control" aria-label="times" id="times" disabled>
@@ -136,32 +139,29 @@
 
     function calTotal() {
 
-        // Liquidation Calculations
-
+        // Get Input Values
         let capital = parseFloat(document.getElementById("capital").value);
         let leverage = parseFloat(document.getElementById("leverage").value);
         let margin = parseFloat(document.getElementById("margin").value);
 
+        // Liquidation Calculations
         let temp = 100 * leverage / (leverage + 1 - ((margin / 100) * leverage))
-
         let liquidation_p = 100 * Math.abs((100 - temp) / temp)
         let liquidation = (capital * liquidation_p) / 100
 
         // let liquidation_p = 100 - Math.abs(((capital - (capital / leverage)) / capital) * 100)
         // let liquidation = (capital * liquidation_p) / 100
-
         document.getElementById("liquidation_p").value = liquidation_p;
         document.getElementById("liquidation").value = liquidation;
 
         // Percentage Of Change Calculations
-
         let initial = parseFloat(document.getElementById("initial_value").value);
         let final = parseFloat(document.getElementById("final_value").value);
-
         let difference = Math.abs(final - initial)
         let change = 100 * Math.abs((final - initial) / initial)
         let times = (final > initial) ? final / initial : (initial > final) ? initial / final : null
 
+        // Return Values
         document.getElementById("difference").value = difference;
         document.getElementById("change").value = change;
         document.getElementById("times").value = times;

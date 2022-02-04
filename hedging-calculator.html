@@ -28,10 +28,10 @@
                         <a class="nav-link" href="./liquidation-calculator.html">Liquidation</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="./position-size-calculator.html">Position Size</a>
+                        <a class="nav-link" href="./position-size-calculator.html">Position Size</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link me-3" href="./hedging-calculator.html">Hedging</a>
+                        <a class="nav-link active me-3" href="./hedging-calculator.html">Hedging</a>
                     </li>
                     <li class="nav-item">
                         <a href="https://docs.algostorm.com/" class="btn btn-outline-dark me-2" target="_blank">Docs</a>
@@ -45,7 +45,7 @@
     </nav>
     <br />
     <h1>
-        <center style="color: #ffffff; background-color: #212529; padding: 20px">Position Size Calculator</center>
+        <center style="color: #ffffff; background-color: #212529; padding: 20px">Hedging Calculator</center>
     </h1>
     <br />
     <div class="container col-6">
@@ -59,21 +59,16 @@
                         <label for="capital" class="form-label">Capital</label>
                         <div class="input-group mb-3">
                             <span class="input-group-text">$</span>
-                            <input type="number" class="form-control" aria-label="Capital" id="capital" value="1000">
+                            <input type="number" class="form-control" aria-label="Capital" id="capital" value="5000" min="1" max="10000000">
                         </div>
-                        <label for="risk" class="form-label">Risk Per Trade Percentage (%)</label>
+                        <label for="hedging_zone" class="form-label">Percentage Of Hedging Zone (%)</label>
                         <div class="input-group mb-3">
-                            <input type="number" class="form-control" aria-label="Percentage Of Risk Per Trade" id="risk" value="3" min="0.1" max="100">
-                            <span class="input-group-text">%</span>
-                        </div>
-                        <label for="stop_loss" class="form-label">Stop Loss Percentage (%)</label>
-                        <div class="input-group mb-3">
-                            <input type="number" class="form-control" aria-label="Stop Loss" id="stop_loss" value="0.5" min="0.1" max="100">
+                            <input type="number" class="form-control" aria-label="Percentage Of Hedging Zone" id="hedging_zone" value="1.5" min="0.1" max="99">
                             <span class="input-group-text">%</span>
                         </div>
                         <label for="take_profit" class="form-label">Take Profit Percentage (%)</label>
                         <div class="input-group mb-3">
-                            <input type="number" class="form-control" aria-label="Percentage Of Profit" id="take_profit" value="0.8" min="0.1" max="10000">
+                            <input type="number" class="form-control" aria-label="Percentage Of Profit" id="take_profit" value="2" min="0.1" max="10000">
                             <span class="input-group-text">%</span>
                         </div>
                     </div>
@@ -84,31 +79,37 @@
             <div class="col">
                 <div class="card">
                     <div class="card-header">
-                        Position Size & Leverage Calculations
+                        Position Size Calculations
                     </div>
                     <div class="card-body">
-                        <label for="size" class="form-label">Total Position Size</label>
+                        <label for="position_1" class="form-label">Position #1</label>
                         <div class="input-group mb-3">
                             <span class="input-group-text">$</span>
-                            <input type="number" class="form-control" aria-label="Total Position Size" id="size" disabled>
+                            <input type="number" class="form-control" aria-label="Position 1" id="position_1" disabled>
                         </div>
-                        <label for="leverage" class="form-label">Required Leverage</label>
-                        <div class="input-group mb-3">
-                            <span class="input-group-text">X</span>
-                            <input type="number" class="form-control" aria-label="leverage" id="leverage" disabled>
-                        </div>
-                        <label for="possible_loss" class="form-label">Possible Loss</label>
+                        <label for="position_1" class="form-label">Position #2</label>
                         <div class="input-group mb-3">
                             <span class="input-group-text">$</span>
-                            <input type="number" class="form-control" aria-label="Possible Loss" id="possible_loss" disabled>
+                            <input type="number" class="form-control" aria-label="Position 2" id="position_2" disabled>
                         </div>
-                        <label for="possible_profit" class="form-label">Possible Profit</label>
+                        <label for="position_1" class="form-label">Position #3</label>
                         <div class="input-group mb-3">
                             <span class="input-group-text">$</span>
-                            <input type="number" class="form-control" aria-label="Possible Profit" id="possible_profit" disabled>
+                            <input type="number" class="form-control" aria-label="Position 3" id="position_3" disabled>
+                        </div>
+                        <label for="positions_sum" class="form-label">Sum Of Positions</label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">$</span>
+                            <input type="number" class="form-control" aria-label="Sum Of Positions" id="positions_sum" disabled>
+                        </div>
+                        <label for="remaining_capital" class="form-label">Remaining Unallocated Capital</label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">$</span>
+                            <input type="number" class="form-control" aria-label="Remaining Capital" id="remaining_capital" disabled>
                         </div>
                     </div>
                 </div>
+                <br><br>
             </div>
             <div class="mb-3 col-md-12 text-center">
                 <button type="button" class="btn btn-outline-dark btn-lg btn-block" onclick="calTotal()" id="btnTotal">Calculate</button>
@@ -129,21 +130,60 @@
     function calTotal() {
         // Get Input Values
         let capital = parseFloat(document.getElementById("capital").value);
-        let risk = parseFloat(document.getElementById("risk").value);
-        let stop_loss = parseFloat(document.getElementById("stop_loss").value);
+        let hedging_zone = parseFloat(document.getElementById("hedging_zone").value);
         let take_profit = parseFloat(document.getElementById("take_profit").value);
 
-        // Calculations
-        let size_value = (capital * (risk / 100)) / (stop_loss / 100)
-        let leverage_value = size_value / capital
-        let possible_loss_value = capital * leverage_value * (stop_loss / 100)
-        let possible_profit_value = capital * leverage_value * (take_profit / 100)
+        // Declare Variables
+        let position_1_final = 0
+        let breakeven_1 = 0
+        let position_2_pure = 0
+        let position_2_final = 0
+        let breakeven_2 = 0
+        let position_3_pure = 0
+        let position_3_final = 0
+        let position_sum = 0
+        let remaining_capital = 1
+        let additional_percentage = 1
+
+        // Calculate The Additional Percentage
+        while (remaining_capital > 0) {
+            position_1_final = capital / 5
+
+            breakeven_1 = position_1_final * ((hedging_zone + take_profit) / 100)
+            position_2_pure = (breakeven_1 * 100) / take_profit
+            position_2_final = position_2_pure + ((additional_percentage * position_2_pure) / 100)
+
+            breakeven_2 = position_2_final * ((hedging_zone + take_profit) / 100)
+            position_3_pure = ((breakeven_2 * 100) / take_profit) - position_1_final
+            position_3_final = position_3_pure + ((additional_percentage * position_3_pure) / 100)
+
+            position_sum = position_1_final + position_2_final + position_3_final
+            remaining_capital = capital - position_sum
+
+            additional_percentage = additional_percentage + 1
+        }
+
+        // Calculate The Final Position Sizes
+        additional_percentage = additional_percentage - 2
+        position_1_final = capital / 5
+
+        breakeven_1 = position_1_final * ((hedging_zone + take_profit) / 100)
+        position_2_pure = (breakeven_1 * 100) / take_profit
+        position_2_final = position_2_pure + ((additional_percentage * position_2_pure) / 100)
+
+        breakeven_2 = position_2_final * ((hedging_zone + take_profit) / 100)
+        position_3_pure = ((breakeven_2 * 100) / take_profit) - position_1_final
+        position_3_final = position_3_pure + ((additional_percentage * position_3_pure) / 100)
+
+        position_sum = position_1_final + position_2_final + position_3_final
+        remaining_capital = capital - position_sum
 
         // Return Values
-        document.getElementById("size").value = size_value;
-        document.getElementById("leverage").value = leverage_value;
-        document.getElementById("possible_loss").value = possible_loss_value;
-        document.getElementById("possible_profit").value = possible_profit_value;
+        document.getElementById("position_1").value = position_1_final;
+        document.getElementById("position_2").value = position_2_final;
+        document.getElementById("position_3").value = position_3_final;
+        document.getElementById("positions_sum").value = position_sum;
+        document.getElementById("remaining_capital").value = remaining_capital;
 
         return true;
     }

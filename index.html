@@ -22,13 +22,16 @@
             <div class="navbar-collapse collapse w-100" id="collapsingNavbar">
                 <ul class="nav navbar-nav ms-auto w-100 justify-content-end">
                     <li class="nav-item">
-                        <a class="nav-link active" href="./index.html">Compound Profits Calculator</a>
+                        <a class="nav-link active" href="./index.html">Compound Profits</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="./liquidation-calculator.html">Liquidation Calculator</a>
+                        <a class="nav-link" href="./liquidation-calculator.html">Liquidation</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link me-3" href="./position-size-calculator.html">Position Size Calculator</a>
+                        <a class="nav-link" href="./position-size-calculator.html">Position Size</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link me-3" href="./hedging-calculator.html">Hedging</a>
                     </li>
                     <li class="nav-item">
                         <a href="https://docs.algostorm.com/" class="btn btn-outline-dark me-2" target="_blank">Docs</a>
@@ -53,12 +56,12 @@
                         Capital & Position Sizing
                     </div>
                     <div class="card-body">
-                        <label for="capital" class="form-label">Initial Capital</label>
+                        <label for="initial_capital" class="form-label">Initial Capital</label>
                         <div class="input-group mb-3">
                             <span class="input-group-text">$</span>
                             <input type="number" class="form-control" aria-label="Initial Capital" id="initial_capital" value="1000" , step="0.01">
                         </div>
-                        <label for="profit" class="form-label">Position Size Per Order (%)</label>
+                        <label for="position_percentage" class="form-label">Position Size Per Order (%)</label>
                         <div class="input-group mb-3">
                             <input type="number" class="form-control" aria-label="Position Size In Percentage Per Order" id="position_percentage" value="20" , step="0.01">
                             <span class="input-group-text">%</span>
@@ -162,6 +165,7 @@
         let rounds = parseFloat(document.getElementById("rounds").value)
         let desired_balance = parseFloat(document.getElementById("desired_balance").value)
 
+        // Call Functions For Calculations
         let { total_profit, new_balance } = calBalance(initial_capital, position_percentage, profit, leverage, rounds);
         let required_rounds_with_leverage = calRoundsWithLeverage(initial_capital, position_percentage, profit, leverage, desired_balance);
         let required_rounds_without_leverage = calRoundsWithoutLeverage(initial_capital, position_percentage, profit, desired_balance);
