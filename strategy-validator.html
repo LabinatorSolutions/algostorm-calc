@@ -1,0 +1,327 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Trading Calculators - AlgoStorm.com</title>
+    <meta name="description" content="Trading Calculators - AlgoStorm.com">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="shortcut icon" type="image/jpg" href="calculator.ico" />
+</head>
+
+<body style="background-color:#f8f9fa;">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <br />
+    <nav class="navbar navbar-light bg-light navbar-expand-md justify-content-center">
+        <div class="container">
+            <a href="./index.html" class="navbar-brand d-flex w-50 me-auto"><img src="logo.svg" alt="AlgoStorm Logo" width="30" height="30" style="color:#212529; margin-right: 5px">AlgoStorm Trading Calculators</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsingNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse collapse w-100" id="collapsingNavbar">
+                <ul class="nav navbar-nav ms-auto w-100 justify-content-end">
+                    <li class="nav-item">
+                        <a class="nav-link" href="./index.html">Compound Profits</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./liquidation-calculator.html">Liquidation</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="./strategy-validator.html">Validation</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./position-size-calculator.html">Position Size</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link me-3" href="./hedging-calculator.html">Hedging</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="https://docs.algostorm.com/" class="btn btn-outline-dark me-2" target="_blank">Docs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="https://algostorm.com/" class="btn btn-outline-dark me-2" target="_blank">AlgoStorm.com</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <br />
+    <h1>
+        <center style="color: #ffffff; background-color: #212529; padding: 20px">Strategy Validator</center>
+    </h1>
+    <br />
+    <div class="container col">
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="card-header">
+                        Basic Input Values
+                    </div>
+                    <div class="card-body">
+                        <label for="initial_capital" class="form-label">Initial Capital</label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">$</span>
+                            <input type="number" class="form-control" aria-label="Initial Capital" id="initial_capital" value="5000" min="100" max="100000">
+                        </div>
+                        <label for="position_percentage" class="form-label">Position Percentage (%)</label>
+                        <div class="input-group mb-3">
+                            <input type="number" class="form-control" aria-label="Position Percentage" id="position_percentage" value="2" min="0.1" max="100">
+                            <span class="input-group-text">%</span>
+                        </div>
+                        <label for="take_profit" class="form-label">Take Profit Percentage (%)</label>
+                        <div class="input-group mb-3">
+                            <input type="number" class="form-control" aria-label="Percentage Of Profit" id="take_profit" value="1.7" min="0" max="10000">
+                            <span class="input-group-text">%</span>
+                        </div>
+                        <label for="stop_loss" class="form-label">Stop Loss Percentage (%)</label>
+                        <div class="input-group mb-3">
+                            <input type="number" class="form-control" aria-label="Stop Loss" id="stop_loss" value="1" min="0.1" max="100">
+                            <span class="input-group-text">%</span>
+                        </div>
+                        <label for="winning_percentage" class="form-label">Strategy Winning Percentage (%)</label>
+                        <div class="input-group mb-3">
+                            <input type="number" class="form-control" aria-label="Strategy Winning Percentage" id="winning_percentage" value="60" min="0" max="100">
+                            <span class="input-group-text">%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card">
+                    <div class="card-header">
+                        Advanced Input Values
+                    </div>
+                    <div class="card-body">
+                        <label for="leverage" class="form-label">Leverage</label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">X</span>
+                            <input type="number" class="form-control" aria-label="Leverage" id="leverage" value="10" min="1" max="200">
+                        </div>
+                        <label for="total_trades" class="form-label">Total Trades</label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">#</span>
+                            <input type="number" class="form-control" aria-label="Total Trades" id="total_trades" value="100" min="1" max="5000">
+                        </div>
+                        <label for="limit_fee" class="form-label">Limit Order Commission Fee</label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">%</span>
+                            <input type="number" class="form-control" aria-label="Limit Order Commission Fee" id="limit_fee" value="-0.025" min="-10" max="10">
+                        </div>
+                        <label for="market_fee" class="form-label">Market Order Commission Fee</label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">%</span>
+                            <input type="number" class="form-control" aria-label="Market Order Commission Fee" id="market_fee" value="0.075" min="-10" max="10">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card">
+                    <div class="card-header">
+                        Summary Report
+                    </div>
+                    <div class="card-body">
+                        <label for="won_amount" class="form-label">Won Amount</label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">$</span>
+                            <input type="number" class="form-control" aria-label="Won Amount" id="won_amount" disabled>
+                        </div>
+                        <label for="lost_amount" class="form-label">Lost Amount</label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">$</span>
+                            <input type="number" class="form-control" aria-label="Lost Amount" id="lost_amount" disabled>
+                        </div>
+                        <label for="fees_paid" class="form-label">Fees Paid</label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">$</span>
+                            <input type="number" class="form-control" aria-label="Fees Paid" id="fees_paid" disabled>
+                        </div>
+                        <label for="trades_counter" class="form-label">Number Of Trades</label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">#</span>
+                            <input type="number" class="form-control" aria-label="Number Of Trades" id="trades_counter" disabled>
+                        </div>
+                        <label for="gain_on_account" class="form-label">Gain On Account (%)</label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">%</span>
+                            <input type="number" class="form-control" aria-label="Gain On Account" id="gain_on_account" disabled>
+                        </div>
+                        <label for="avg_gain_on_account" class="form-label">Average Gain On Account (%)</label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">%</span>
+                            <input type="number" class="form-control" aria-label="Average Gain On Account" id="avg_gain_on_account" disabled>
+                        </div>
+                        <label for="net_profit" class="form-label">Net Profit</label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">$</span>
+                            <input type="number" class="form-control" aria-label="Net Profit" id="net_profit" disabled>
+                        </div>
+                        <label for="final_capital" class="form-label">Final Capital</label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">$</span>
+                            <input type="number" class="form-control" aria-label="Final Capital" id="final_capital" disabled>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="mb-3 col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    Trading Log
+                </div>
+                <div class="card-body">
+                    <div class="input-group mb-3">
+                        <textarea rows="22" class="form-control" aria-label="Log" id="log" disabled></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="mb-3 col-md-12 text-center">
+            <button type="button" class="btn btn-outline-dark btn-lg btn-block" onclick="calTotal()" id="btnTotal">Calculate</button>
+        </div>
+    </div>
+    <script type="text/javascript">
+    document.addEventListener("keydown", function(event) {
+        if (event.code == "Space" || event.code == "Enter" || event.code == "NumpadEnter") {
+            execute_algo();
+        }
+    })
+
+    document.addEventListener('DOMContentLoaded', function(event) {
+        execute_algo();
+    })
+
+    function execute_algo() {
+        let i = null;
+        let gains_sum = 0;
+        for (i = 0; i < 100; i++) {
+            gains_sum += calTotal();
+        }
+        document.getElementById("avg_gain_on_account").value = (gains_sum / 100).toFixed(3);
+    }
+
+    function inRange(x, min, max) {
+        return Boolean((x >= min) && (x <= max));
+    }
+
+    function calTotal() {
+        document.getElementById("log").value = "";
+        let initial_capital = parseFloat(document.getElementById("initial_capital").value);
+        let position_percentage = parseFloat(document.getElementById("position_percentage").value);
+        let take_profit = parseFloat(document.getElementById("take_profit").value);
+        let stop_loss = parseFloat(document.getElementById("stop_loss").value);
+        let winning_percentage = parseFloat(document.getElementById("winning_percentage").value);
+        let leverage = parseInt(document.getElementById("leverage").value);
+        let total_trades = document.getElementById("total_trades").value;
+        let limit_fee = parseFloat(document.getElementById("limit_fee").value);
+        let market_fee = parseFloat(document.getElementById("market_fee").value);
+        let winning_trades = Math.floor(total_trades * winning_percentage / 100);
+        let losing_trades = Math.floor(total_trades - winning_trades);
+
+        if (inRange(initial_capital, 100, 1000000) == false || inRange(position_percentage, 0.1, 100) == false || inRange(take_profit, 0, 10000) == false || inRange(stop_loss, 0.1, 100) == false || inRange(winning_percentage, 0, 100) == false || inRange(leverage, 1, 200) == false || inRange(total_trades, 1, 5000) == false || inRange(limit_fee, -10, 10) == false || inRange(market_fee, -10, 10) == false) {
+            document.getElementById("won_amount").value = "";
+            document.getElementById("lost_amount").value = "";
+            document.getElementById("fees_paid").value = "";
+            document.getElementById("trades_counter").value = "";
+            document.getElementById("gain_on_account").value = "";
+            document.getElementById("net_profit").value = "";
+            document.getElementById("final_capital").value = "";
+            document.getElementById("log").value = "Please enter logical valid values!";
+            return false;
+        }
+
+        let final_capital = initial_capital;
+        let position_size = (final_capital * position_percentage / 100) * leverage;
+        let profit_n_loss = 0;
+        let trades_counter = 0;
+        let remaining_trades = total_trades;
+        let fees_to_pay = 0;
+        let fees_paid = 0;
+        let is_win = null;
+        let won_amount = 0;
+        let lost_amount = 0;
+
+        document.getElementById("log").value += "#" + trades_counter + ")." + " --- Outcome: " + (is_win == true ? "Win" : "Loss") + " --- Position Size: " + position_size.toFixed(1) + " --- Fees Paid: " + fees_to_pay.toFixed(1) + " --- PnL: " + profit_n_loss.toFixed(1) + " --- Capital: " + final_capital.toFixed(1) + "\r\n";
+
+        while (remaining_trades > 0 && final_capital > 0 && profit_n_loss < final_capital) {
+            // Calculate Position Size
+            position_size = ((final_capital * position_percentage / 100) + profit_n_loss) * leverage;
+
+            if (position_size / leverage > final_capital) {
+                position_size = final_capital * leverage;
+            }
+
+            // Decide randomly if it is a win or loss
+            if (winning_trades > 0 && losing_trades > 0) {
+                // Generate Random Numbers Between 0 and 1
+                // Math.floor((Math.random() * (max - min + 1)) + min)
+                is_win = Boolean(Math.floor(Math.random() * 2));
+                if (is_win == true) {
+                    winning_trades--;
+                } else if (is_win == false) {
+                    losing_trades--;
+                } else {
+                    console.log("Unkown error 01");
+                }
+
+            } else if (winning_trades > 0 && losing_trades == 0) { // No more losing trades!
+                is_win = true;
+            } else if (winning_trades == 0 && losing_trades > 0) { // No more winning trades!
+                is_win = false;
+            } else if (winning_trades == 0 && losing_trades == 0) { // No more trades!
+                is_win = false;
+            } else {
+                console.log("Unkown error 02");
+            }
+
+            // Calculate The Winning Percentage
+            if (is_win == true) {
+                fees_to_pay = (limit_fee * position_size / 100) + (market_fee * position_size / 100);
+                profit_n_loss = (position_size * take_profit / 100) - fees_to_pay;
+                won_amount += profit_n_loss;
+
+            } else if (is_win == false) {
+                fees_to_pay = 2 * (market_fee * position_size / 100);
+                profit_n_loss = ((position_size * stop_loss / 100) + fees_to_pay) * -1;
+                lost_amount += profit_n_loss;
+
+            } else {
+                console.log("Unkown error in calTotal()");
+                break;
+            }
+
+            final_capital += profit_n_loss;
+            fees_paid += fees_to_pay;
+            remaining_trades--;
+            trades_counter = total_trades - remaining_trades;
+
+            document.getElementById("log").value += "#" + trades_counter + ")." + " --- Outcome: " + (is_win == true ? "Win" : "Loss") + " --- Position Size: " + position_size.toFixed(1) + " --- Fees Paid: " + fees_to_pay.toFixed(1) + " --- PnL: " + profit_n_loss.toFixed(1) + " --- Capital: " + final_capital.toFixed(1) + "\r\n";
+
+            if (final_capital < 1) {
+                document.getElementById("log").value += "Final capital is less than 1!";
+                break;
+            }
+        }
+
+        net_profit = won_amount + lost_amount;
+        gain_on_account = (100 * net_profit) / initial_capital;
+
+        // Return Values
+        document.getElementById("won_amount").value = won_amount.toFixed(3);
+        document.getElementById("lost_amount").value = lost_amount.toFixed(3);
+        document.getElementById("fees_paid").value = fees_paid.toFixed(3);
+        document.getElementById("trades_counter").value = trades_counter.toFixed();
+        document.getElementById("gain_on_account").value = gain_on_account.toFixed(3);
+        document.getElementById("net_profit").value = net_profit.toFixed(3);
+        document.getElementById("final_capital").value = final_capital.toFixed(3);
+
+        return gain_on_account;
+    }
+    </script>
+</body>
+
+</html>
