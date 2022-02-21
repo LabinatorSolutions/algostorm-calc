@@ -84,6 +84,17 @@
                             <input type="number" class="form-control" aria-label="Strategy Winning Percentage" id="winning_percentage" value="60" min="0" max="100">
                             <span class="input-group-text">%</span>
                         </div>
+                        <label for="Compounding Mode" class="form-label">Compounding Mode</label>
+                        <div class="input-group mb-3 mx-1">
+                            <div class="form-check">
+                                <input type="radio" class="form-check-input" id="compounding_option_1" name="Compounding Mode" value="Classical">
+                                <label class="form-check-label" for="compounding_option_1">Classical</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="radio" class="form-check-input mx-1" id="compounding_option_2" name="Compounding Mode" value="Modern" checked>
+                                <label class="form-check-label" for="compounding_option_2">Modern</label>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -215,12 +226,15 @@
         let take_profit = parseFloat(document.getElementById("take_profit").value);
         let stop_loss = parseFloat(document.getElementById("stop_loss").value);
         let winning_percentage = parseFloat(document.getElementById("winning_percentage").value);
+        let compounding_mode = document.querySelector('input[name="Compounding Mode"]:checked')?.value;
         let leverage = parseInt(document.getElementById("leverage").value);
         let total_trades = document.getElementById("total_trades").value;
         let limit_fee = parseFloat(document.getElementById("limit_fee").value);
         let market_fee = parseFloat(document.getElementById("market_fee").value);
         let winning_trades = Math.floor(total_trades * winning_percentage / 100);
         let losing_trades = Math.floor(total_trades - winning_trades);
+
+        console.log(compounding_mode)
 
         if (inRange(initial_capital, 100, 1000000) == false || inRange(position_percentage, 0.1, 100) == false || inRange(take_profit, 0, 10000) == false || inRange(stop_loss, 0.1, 100) == false || inRange(winning_percentage, 0, 100) == false || inRange(leverage, 1, 200) == false || inRange(total_trades, 1, 5000) == false || inRange(limit_fee, -10, 10) == false || inRange(market_fee, -10, 10) == false) {
             document.getElementById("won_amount").value = "";
@@ -248,8 +262,13 @@
         document.getElementById("log").value += "#" + trades_counter + ")." + " --- Outcome: " + (is_win == true ? "Win" : "Loss") + " --- Position Size: " + position_size.toFixed(1) + " --- Fees Paid: " + fees_to_pay.toFixed(1) + " --- PnL: " + profit_n_loss.toFixed(1) + " --- Capital: " + final_capital.toFixed(1) + "\r\n";
 
         while (remaining_trades > 0 && final_capital > 0 && profit_n_loss < final_capital) {
+
             // Calculate Position Size
-            position_size = ((final_capital * position_percentage / 100) + profit_n_loss) * leverage;
+            if (compounding_mode == "Modern") {
+                position_size = ((final_capital * position_percentage / 100) + profit_n_loss) * leverage;
+            } else if (compounding_mode == "Classical") {
+                position_size = (final_capital * position_percentage / 100) * leverage;
+            }
 
             if (position_size / leverage > final_capital) {
                 position_size = final_capital * leverage;
