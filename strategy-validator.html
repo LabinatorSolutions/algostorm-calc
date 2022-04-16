@@ -62,16 +62,16 @@
                         <label for="initial_capital" class="form-label">Initial Capital</label>
                         <div class="input-group mb-3">
                             <span class="input-group-text">$</span>
-                            <input type="number" class="form-control" aria-label="Initial Capital" id="initial_capital" value="5000" min="100" max="100000">
+                            <input type="number" class="form-control" aria-label="Initial Capital" id="initial_capital" value="100" min="10" max="1000000">
                         </div>
                         <label for="position_percentage" class="form-label">Position Percentage (%)</label>
                         <div class="input-group mb-3">
-                            <input type="number" class="form-control" aria-label="Position Percentage" id="position_percentage" value="2" min="0.1" max="100">
+                            <input type="number" class="form-control" aria-label="Position Percentage" id="position_percentage" value="3" min="0.1" max="100">
                             <span class="input-group-text">%</span>
                         </div>
                         <label for="take_profit" class="form-label">Take Profit Percentage (%)</label>
                         <div class="input-group mb-3">
-                            <input type="number" class="form-control" aria-label="Percentage Of Profit" id="take_profit" value="1.7" min="0" max="10000">
+                            <input type="number" class="form-control" aria-label="Percentage Of Profit" id="take_profit" value="1.5" min="0" max="10000">
                             <span class="input-group-text">%</span>
                         </div>
                         <label for="stop_loss" class="form-label">Stop Loss Percentage (%)</label>
@@ -117,12 +117,12 @@
                         <label for="limit_fee" class="form-label">Limit Order Commission Fee</label>
                         <div class="input-group mb-3">
                             <span class="input-group-text">%</span>
-                            <input type="number" class="form-control" aria-label="Limit Order Commission Fee" id="limit_fee" value="-0.025" min="-10" max="10">
+                            <input type="number" class="form-control" aria-label="Limit Order Commission Fee" id="limit_fee" value="0.01" min="-1" max="1">
                         </div>
                         <label for="market_fee" class="form-label">Market Order Commission Fee</label>
                         <div class="input-group mb-3">
                             <span class="input-group-text">%</span>
-                            <input type="number" class="form-control" aria-label="Market Order Commission Fee" id="market_fee" value="0.075" min="-10" max="10">
+                            <input type="number" class="form-control" aria-label="Market Order Commission Fee" id="market_fee" value="0.06" min="-1" max="1">
                         </div>
                     </div>
                 </div>
@@ -236,7 +236,7 @@
 
         console.log(compounding_mode)
 
-        if (inRange(initial_capital, 100, 1000000) == false || inRange(position_percentage, 0.1, 100) == false || inRange(take_profit, 0, 10000) == false || inRange(stop_loss, 0.1, 100) == false || inRange(winning_percentage, 0, 100) == false || inRange(leverage, 1, 200) == false || inRange(total_trades, 1, 5000) == false || inRange(limit_fee, -10, 10) == false || inRange(market_fee, -10, 10) == false) {
+        if (inRange(initial_capital, 10, 1000000) == false || inRange(position_percentage, 0.1, 100) == false || inRange(take_profit, 0, 10000) == false || inRange(stop_loss, 0.1, 100) == false || inRange(winning_percentage, 0, 100) == false || inRange(leverage, 1, 200) == false || inRange(total_trades, 1, 5000) == false || inRange(limit_fee, -1, 1) == false || inRange(market_fee, -1, 1) == false) {
             document.getElementById("won_amount").value = "";
             document.getElementById("lost_amount").value = "";
             document.getElementById("fees_paid").value = "";
