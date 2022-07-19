@@ -40,13 +40,13 @@
                     <div class="card-body">
                         <label for="initial_balance" class="form-label">Initial Balance</label>
                         <div class="input-group mb-3">
-                            <span class="input-group-text">$</span><input type="number" class="form-control" aria-label="Initial Balance" id="initial_balance" value="1000">
+                            <span class="input-group-text">$</span><input type="number" class="form-control" aria-label="Initial Balance" id="initial_balance" value="1000" min="1" max="999999999999">
                             <button type="button" class="btn btn-outline-dark btn-block" onclick="set_balance()" id="btnSetBalance">Set Balance</button>
                             <button type="button" class="btn btn-outline-dark btn-block" onclick="document.location.reload(true)" id="btnResetEverything" disabled>Reset Everything</button>
                         </div>
                         <label for="latest_profit_percentage" class="form-label">Percentage Of Profit (%)</label>
                         <div class="input-group mb-3">
-                            <input type="number" class="form-control" aria-label="Percentage Of Profit" id="latest_profit_percentage" value="2" min="0" max="1000000"><span class="input-group-text">%</span>
+                            <input type="number" class="form-control" aria-label="Percentage Of Profit" id="latest_profit_percentage" value="1.5" min="0" max="999999999"><span class="input-group-text">%</span>
                             <button type="button" class="btn btn-outline-dark btn-block" onclick="add_profit()" id="btnAddProfit" disabled>Add Profit</button>
                         </div>
                         <label for="latest_loss_percentage" class="form-label">Percentage Of Loss (%)</label>
@@ -63,23 +63,23 @@
                     <div class="card-body">
                         <label class="form-label">Total Trades | Total Wins | Total Losses | Max Win Streak | Max Loss Streak </label>
                         <div class="input-group mb-3">
-                            <input type="number" class="form-control" aria-label="Total Trades" id="total_trades" value="0" disabled>
-                            <input type="number" class="form-control" aria-label="Total Wins" id="total_wins" value="0" disabled>
-                            <input type="number" class="form-control" aria-label="Total Losses" id="total_losses" value="0" disabled>
-                            <input type="number" class="form-control" aria-label="Max Consecutive Wins" id="consecutive_wins" value="0" disabled>
-                            <input type="number" class="form-control" aria-label="Max Consecutive Losses" id="consecutive_losses" value="0" disabled>
+                            <input type="number" class="form-control" aria-label="Total Trades" id="total_trades" value="0" min="0" disabled>
+                            <input type="number" class="form-control" aria-label="Total Wins" id="total_wins" value="0" min="0" disabled>
+                            <input type="number" class="form-control" aria-label="Total Losses" id="total_losses" value="0" min="0" disabled>
+                            <input type="number" class="form-control" aria-label="Max Consecutive Wins" id="consecutive_wins" value="0" min="0" disabled>
+                            <input type="number" class="form-control" aria-label="Max Consecutive Losses" id="consecutive_losses" value="0" min="0" disabled>
                         </div>
                         <label class="form-label">Gross Profit ($) | Gross Loss ($) | Profit Factor</label>
                         <div class="input-group mb-3">
-                            <input type="number" class="form-control" aria-label="Gross Profit" id="gross_profit" value="0" disabled>
-                            <input type="number" class="form-control" aria-label="Gross Loss" id="gross_loss" value="0" disabled>
+                            <input type="number" class="form-control" aria-label="Gross Profit" id="gross_profit" value="0" min="0" disabled>
+                            <input type="number" class="form-control" aria-label="Gross Loss" id="gross_loss" value="0" min="0" disabled>
                             <input type="number" class="form-control" aria-label="Profit Factor" id="profit_factor" value="0" disabled>
                         </div>
-                        <label class="form-label">Win Rate (%) | Net Profit ($) | Profit (%)</label>
+                        <label class="form-label">Win Rate (%) | Net Profit ($) | PnL (%)</label>
                         <div class="input-group mb-3">
-                            <input type="number" class="form-control" aria-label="Win Rate" id="win_rate" value="0" disabled>
+                            <input type="number" class="form-control" aria-label="Win Rate" id="win_rate" value="0" min="0" disabled>
                             <input type="number" class="form-control" aria-label="Net Profit" id="net_profit" value="0" disabled>
-                            <input type="number" class="form-control" aria-label="Profit Percentage" id="profit_percentage" value="0" disabled>
+                            <input type="number" class="form-control" aria-label="PnL Percentage" id="pnl_percentage" value="0" disabled>
                         </div>
                     </div>
                 </div>
@@ -98,18 +98,21 @@
 
     // ------ Get Input Fields
 
-    let initial_balance = parseFloat(document.getElementById("initial_balance").value);
     let ctx = document.getElementById('chart_canvas').getContext('2d');
+    let balance_chart = null;
 
     // ------ Set Global Variables
 
+    let initial_balance = 0;
+    let new_balance = initial_balance;
+    let previous_balance = initial_balance;
+
     let total_wins = 0;
     let total_losses = 0;
-
     let gross_profit = 0;
     let gross_loss = 0;
     let net_profit = 0;
-    let profit_percentage = 0;
+    let pnl_percentage = 0;
     let loss_percentage = 0;
     let profit_factor = 0;
     let win_rate = 0;
@@ -123,12 +126,6 @@
     let consecutive_wins = 0;
     let consecutive_losses = 0;
 
-    // ------ Set Balance Variables
-
-    let new_balance = initial_balance;
-    let previous_balance = initial_balance;
-    let balance_chart = null;
-
     // ------ Set Chart Variables
 
     let x_values = [];
@@ -138,6 +135,11 @@
     // ****** Functions ******
 
     function set_balance() {
+
+        // Set Balance Variables
+        initial_balance = parseFloat(document.getElementById("initial_balance").value);
+        new_balance = initial_balance;
+        previous_balance = initial_balance;
 
         // Push X/Y Values
         x_values.push(0);
@@ -150,7 +152,7 @@
                 labels: [x_values[0]],
                 datasets: [{
                     label: "Balance",
-                    pointBackgroundColor: ["#d8dee9ff"],
+                    pointBackgroundColor: ["#ebcb8bff"],
                     pointStyle: "circle",
                     pointRadius: 5,
                     pointHoverRadius: 10,
@@ -196,7 +198,7 @@
             } else if (new_balance < previous_balance) {
                 dataset.pointBackgroundColor.push("#bf616aff");
             } else {
-                dataset.pointBackgroundColor.push("#d8dee9ff");
+                dataset.pointBackgroundColor.push("#ebcb8bff");
             }
         });
 
@@ -229,7 +231,7 @@
             } else if (new_balance < previous_balance) {
                 dataset.pointBackgroundColor.push("#bf616aff");
             } else {
-                dataset.pointBackgroundColor.push("#d8dee9ff");
+                dataset.pointBackgroundColor.push("#ebcb8bff");
             }
         });
 
@@ -271,7 +273,7 @@
             win_rate = (total_wins / total_trades) * 100;
             net_profit = gross_profit - gross_loss;
 
-            profit_percentage = (net_profit > 0) ? net_profit * 100 / initial_balance : 0;
+            pnl_percentage = net_profit * 100 / initial_balance;
             profit_factor = (gross_profit > 0) && (gross_loss > 0) ? (gross_profit / gross_loss) : 0;
     }
 
@@ -285,7 +287,7 @@
         document.getElementById("gross_profit").value = gross_profit.toFixed(5);
         document.getElementById("gross_loss").value = gross_loss.toFixed(5);
         document.getElementById("net_profit").value = net_profit.toFixed(5);
-        document.getElementById("profit_percentage").value = profit_percentage.toFixed(5);
+        document.getElementById("pnl_percentage").value = pnl_percentage.toFixed(5);
         document.getElementById("profit_factor").value = profit_factor.toFixed(5);
         document.getElementById("win_rate").value = win_rate.toFixed(5);
     }
