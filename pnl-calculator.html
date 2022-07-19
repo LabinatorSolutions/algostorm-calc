@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Trading Calculators - AlgoStorm.com</title>
+    <meta name="description" content="Trading Calculators - AlgoStorm.com">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js" integrity="sha512-sW/w8s4RWTdFFSduOTGtk4isV1+190E/GghVffMA9XczdJ2MDzSzLEubKAs5h0wzgSJOQTRYyaz73L3d6RtJSg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="shortcut icon" type="image/jpg" href="calculator.ico">
+</head>
+
+<body style="background-color:#f8f9fa;">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script> <br>
+    <nav class="navbar navbar-light bg-light navbar-expand-md justify-content-center">
+        <div class="container"> <a href="./index.html" class="navbar-brand d-flex w-20 me-auto"><img src="logo.svg" alt="AlgoStorm Logo" width="30" height="30" style="color:#212529; margin-right: 5px">AlgoStorm Trading Calculators</a> <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsingNavbar"> <span class="navbar-toggler-icon"></span> </button>
+            <div class="navbar-collapse collapse w-100" id="collapsingNavbar">
+                <ul class="nav navbar-nav ms-auto w-100 justify-content-end">
+                    <li class="nav-item"> <a class="nav-link" href="./index.html">Compound Profits</a> </li>
+                    <li class="nav-item"> <a class="nav-link" href="./liquidation-calculator.html">Liquidation</a> </li>
+                    <li class="nav-item"> <a class="nav-link" href="./strategy-validator.html">Validation</a> </li>
+                    <li class="nav-item"> <a class="nav-link active" href="./pnl-calculator.html">PnL</a> </li>
+                    <li class="nav-item"> <a class="nav-link" href="./position-size-calculator.html">Position Size</a> </li>
+                    <li class="nav-item"> <a class="nav-link me-3" href="./hedging-calculator.html">Hedging</a> </li>
+                    <li class="nav-item"> <a href="https://docs.algostorm.com/" class="btn btn-outline-dark me-2" target="_blank">Docs</a></li>
+                    <li class="nav-item"><a href="https://algostorm.com/" class="btn btn-outline-dark me-2" target="_blank">AlgoStorm.com</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav> <br>
+    <h1>
+        <center style="color: #ffffff; background-color: #212529; padding: 20px">Strategy Profit/Loss (PnL) Calculator</center>
+    </h1> <br>
+    <div class="container col-12">
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="card-header">Backtesting Inputs</div>
+                    <div class="card-body">
+                        <label for="initial_balance" class="form-label">Initial Balance</label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">$</span><input type="number" class="form-control" aria-label="Initial Balance" id="initial_balance" value="1000">
+                            <button type="button" class="btn btn-outline-dark btn-block" onclick="set_balance()" id="btnSetBalance">Set Balance</button>
+                            <button type="button" class="btn btn-outline-dark btn-block" onclick="document.location.reload(true)" id="btnResetEverything" disabled>Reset Everything</button>
+                        </div>
+                        <label for="latest_profit_percentage" class="form-label">Percentage Of Profit (%)</label>
+                        <div class="input-group mb-3">
+                            <input type="number" class="form-control" aria-label="Percentage Of Profit" id="latest_profit_percentage" value="2" min="0" max="1000000"><span class="input-group-text">%</span>
+                            <button type="button" class="btn btn-outline-dark btn-block" onclick="add_profit()" id="btnAddProfit" disabled>Add Profit</button>
+                        </div>
+                        <label for="latest_loss_percentage" class="form-label">Percentage Of Loss (%)</label>
+                        <div class="input-group mb-3">
+                            <input type="number" class="form-control" aria-label="Percentage Of Loss" id="latest_loss_percentage" value="1" min="0" max="100"><span class="input-group-text">%</span>
+                            <button type="button" class="btn btn-outline-dark btn-block" onclick="add_loss()" id="btnAddLoss" disabled>Add Loss</button>
+                        </div>
+                    </div>
+                </div> <br>
+            </div>
+            <div class="col">
+                <div class="card">
+                    <div class="card-header">Profit/Loss Details</div>
+                    <div class="card-body">
+                        <label class="form-label">Total Trades | Total Wins | Total Losses | Max Win Streak | Max Loss Streak </label>
+                        <div class="input-group mb-3">
+                            <input type="number" class="form-control" aria-label="Total Trades" id="total_trades" value="0" disabled>
+                            <input type="number" class="form-control" aria-label="Total Wins" id="total_wins" value="0" disabled>
+                            <input type="number" class="form-control" aria-label="Total Losses" id="total_losses" value="0" disabled>
+                            <input type="number" class="form-control" aria-label="Max Consecutive Wins" id="consecutive_wins" value="0" disabled>
+                            <input type="number" class="form-control" aria-label="Max Consecutive Losses" id="consecutive_losses" value="0" disabled>
+                        </div>
+                        <label class="form-label">Gross Profit ($) | Gross Loss ($) | Profit Factor</label>
+                        <div class="input-group mb-3">
+                            <input type="number" class="form-control" aria-label="Gross Profit" id="gross_profit" value="0" disabled>
+                            <input type="number" class="form-control" aria-label="Gross Loss" id="gross_loss" value="0" disabled>
+                            <input type="number" class="form-control" aria-label="Profit Factor" id="profit_factor" value="0" disabled>
+                        </div>
+                        <label class="form-label">Win Rate (%) | Net Profit ($) | Profit (%)</label>
+                        <div class="input-group mb-3">
+                            <input type="number" class="form-control" aria-label="Win Rate" id="win_rate" value="0" disabled>
+                            <input type="number" class="form-control" aria-label="Net Profit" id="net_profit" value="0" disabled>
+                            <input type="number" class="form-control" aria-label="Profit Percentage" id="profit_percentage" value="0" disabled>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="card-body">
+                <canvas id="chart_canvas" height="75%"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+    // ****** Global Variables ******
+
+    // ------ Get Input Fields
+
+    const initial_balance = parseFloat(document.getElementById("initial_balance").value);
+    let ctx = document.getElementById('chart_canvas').getContext('2d');
+
+    // ------ Set Global Variables
+
+    let total_wins = 0;
+    let total_losses = 0;
+
+    let gross_profit = 0;
+    let gross_loss = 0;
+    let net_profit = 0;
+    let profit_percentage = 0;
+    let loss_percentage = 0;
+    let profit_factor = 0;
+    let win_rate = 0;
+
+    let winning_streak_checker = false;
+    let losing_streak_checker = false;
+
+    let winning_streak_counter = 0;
+    let losing_streak_counter = 0;
+
+    let consecutive_wins = 0;
+    let consecutive_losses = 0;
+
+    // ------ Set Balance Variables
+
+    let new_balance = initial_balance;
+    let previous_balance = initial_balance;
+    let balance_chart = null;
+
+    // ------ Set Chart Variables
+
+    let x_values = [];
+    let y_values = [];
+    let index = 0;
+
+    // ****** Functions ******
+
+    function set_balance() {
+
+        // Push X/Y Values
+        x_values.push(0);
+        y_values.push(initial_balance);
+
+        // Set The New Chart Function
+        balance_chart = new Chart(ctx, {
+            type: "line",
+            data: {
+                labels: [x_values[0]],
+                datasets: [{
+                    label: "Balance",
+                    pointBackgroundColor: ["#d8dee9ff"],
+                    pointStyle: "circle",
+                    pointRadius: 5,
+                    pointHoverRadius: 10,
+                    data: [y_values[0]],
+                    tension: 0.1,
+                    fill: {
+                        target: {
+                            value: initial_balance
+                        },
+                        below: "#bf616a80",
+                        above: "#88c0d080",
+                    }
+                }]
+            },
+            options: {
+                responsive: true
+            }
+        });
+
+        // Enable & Disable Buttons
+        document.getElementById("btnSetBalance").disabled = true;
+        document.getElementById("btnResetEverything").disabled = false;
+        document.getElementById("btnAddProfit").disabled = false;
+        document.getElementById("btnAddLoss").disabled = false;
+    }
+
+    function add_profit() {
+
+        let latest_profit_percentage = parseFloat(document.getElementById("latest_profit_percentage").value);
+
+        previous_balance = new_balance;
+        current_profit = (new_balance * latest_profit_percentage) / 100;
+        new_balance = new_balance + current_profit
+
+        index = x_values.length;
+        x_values.push(index);
+        balance_chart.data.labels.push(index);
+
+        balance_chart.data.datasets.forEach((dataset) => {
+            dataset.data.push(new_balance);
+            if (new_balance > previous_balance) {
+                dataset.pointBackgroundColor.push("#88c0d0ff");
+            } else if (new_balance < previous_balance) {
+                dataset.pointBackgroundColor.push("#bf616aff");
+            } else {
+                dataset.pointBackgroundColor.push("#d8dee9ff");
+            }
+        });
+
+        total_wins++;
+        gross_profit += current_profit;
+
+        streak_checker(1);
+        rekt_checker();
+        pnl_calculation();
+        display_values();
+        balance_chart.update();
+    }
+
+    function add_loss() {
+
+        let latest_loss_percentage = parseFloat(document.getElementById("latest_loss_percentage").value);
+
+        previous_balance = new_balance;
+        current_loss = (new_balance * latest_loss_percentage) / 100;
+        new_balance = new_balance - current_loss
+
+        index = x_values.length;
+        x_values.push(index);
+        balance_chart.data.labels.push(index);
+
+        balance_chart.data.datasets.forEach((dataset) => {
+            dataset.data.push(new_balance);
+            if (new_balance > previous_balance) {
+                dataset.pointBackgroundColor.push("#88c0d0ff");
+            } else if (new_balance < previous_balance) {
+                dataset.pointBackgroundColor.push("#bf616aff");
+            } else {
+                dataset.pointBackgroundColor.push("#d8dee9ff");
+            }
+        });
+
+        total_losses++;
+        gross_loss += current_loss;
+
+        streak_checker(-1);
+        rekt_checker();
+        pnl_calculation();
+        display_values();
+        balance_chart.update();
+    }
+
+    function streak_checker(win_or_loss) {
+        if(win_or_loss == 1) {
+            winning_streak_checker = losing_streak_checker == false ? true : false;
+            winning_streak_counter = winning_streak_checker == true ? winning_streak_counter + 1 : 1;
+            consecutive_wins = winning_streak_counter > consecutive_wins ? winning_streak_counter : consecutive_wins;
+            winning_streak_checker = true;
+            losing_streak_checker = false;
+        } else if(win_or_loss == -1) {
+            losing_streak_checker = winning_streak_checker == false ? true : false;
+            losing_streak_counter = losing_streak_checker == true ? losing_streak_counter + 1 : 1;
+            consecutive_losses = losing_streak_counter > consecutive_losses ? losing_streak_counter : consecutive_losses;
+            losing_streak_checker = true;
+            winning_streak_checker = false;
+        }
+    }
+
+    function rekt_checker() {
+        if (new_balance <= 0) {
+            document.getElementById("btnAddProfit").disabled = true;
+            document.getElementById("btnAddLoss").disabled = true;
+        }
+    }
+
+    function pnl_calculation() {
+            total_trades = index;
+            win_rate = (total_wins / total_trades) * 100;
+            net_profit = gross_profit - gross_loss;
+
+            profit_percentage = (net_profit > 0) ? net_profit * 100 / initial_balance : 0;
+            profit_factor = (gross_profit > 0) && (gross_loss > 0) ? (gross_profit / gross_loss) : 0;
+    }
+
+    function display_values() {
+        document.getElementById("total_wins").value = total_wins;
+        document.getElementById("total_losses").value = total_losses;
+        document.getElementById("total_trades").value = total_trades;
+        document.getElementById("consecutive_wins").value = consecutive_wins;
+        document.getElementById("consecutive_losses").value = consecutive_losses;
+
+        document.getElementById("gross_profit").value = gross_profit.toFixed(5);
+        document.getElementById("gross_loss").value = gross_loss.toFixed(5);
+        document.getElementById("net_profit").value = net_profit.toFixed(5);
+        document.getElementById("profit_percentage").value = profit_percentage.toFixed(5);
+        document.getElementById("profit_factor").value = profit_factor.toFixed(5);
+        document.getElementById("win_rate").value = win_rate.toFixed(5);
+    }
+
+    </script>
+</body>
+
+</html>
